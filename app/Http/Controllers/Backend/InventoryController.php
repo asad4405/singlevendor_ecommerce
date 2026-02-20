@@ -59,6 +59,7 @@ class InventoryController extends Controller
             $inventory->size_id = $request->size_id;
             $inventory->stock = $request->stock;
             $inventory->price = $request->price;
+            $inventory->old_price = $request->old_price;
             $inventory->status = 1;
             $inventory->save();
             return back()->with('inventory_success', 'New Inventory Added!');
@@ -96,6 +97,7 @@ class InventoryController extends Controller
         $inventory->size_id = $request->size_id;
         $inventory->stock = $request->stock;
         $inventory->price = $request->price;
+        $inventory->old_price = $request->old_price;
         $inventory->save();
         return redirect()->route('admin.inventory.index',$inventory->product_id)->with('inventory_success', 'Inventory Updated!');
     }

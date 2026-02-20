@@ -18,18 +18,18 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        $banners = Banner::where('category_id',1)->where('status',1)->get();
-        $social_medias = SocialMedia::where('status',1)->get();
-        $categories = Category::where('status',1)->latest()->get();
-        $products = Product::where('status',1)->latest()->get();
+        $banners = Banner::where('category_id', 1)->where('status', 1)->get();
+        $social_medias = SocialMedia::where('status', 1)->get();
+        $categories = Category::where('status', 1)->latest()->get();
+        $products = Product::where('status', 1)->latest()->get();
         $trending_products = Product::where(['status' => 1, 'feature_product' => 1])->get();
-        return view('Frontend.pages.index',compact('banners', 'social_medias','categories', 'products', 'trending_products'));
+        return view('Frontend.pages.index', compact('banners', 'social_medias', 'categories', 'products', 'trending_products'));
     }
 
     public function product_details($slug)
     {
-        $product = Product::where('slug',$slug)->first();
-        $product_sliders = SliderImage::where('product_id',$product->id)->get();
+        $product = Product::where('slug', $slug)->first();
+        $product_sliders = SliderImage::where('product_id', $product->id)->get();
         $product_colors = Inventory::where('product_id', $product->id)
             ->groupBy('color_id')
             ->selectRaw('sum(color_id) as sum, color_id')
@@ -38,15 +38,37 @@ class FrontendController extends Controller
             ->groupBy('size_id')
             ->selectRaw('sum(size_id) as sum, size_id')
             ->get();
-        return view('Frontend.pages.product_details',compact('product', 'product_sliders', 'product_colors', 'product_sizes'));
+        return view('Frontend.pages.product_details', compact('product', 'product_sliders', 'product_colors', 'product_sizes'));
+    }
+
+    public function getSizesByColor(Request $request)
+    {
+        $sizes = Inventory::with('size')
+            ->where('product_id', $request->product_id)
+            ->where('color_id', $request->color_id)
+            ->select('size_id', 'stock')
+            ->groupBy('size_id', 'stock')
+            ->get();
+
+        return response()->json($sizes);
+    }
+
+    public function getInventoryBySize(Request $request)
+    {
+        $inventory = Inventory::where('product_id', $request->product_id)
+            ->where('color_id', $request->color_id)
+            ->where('size_id', $request->size_id)
+            ->first();
+
+        return response()->json($inventory);
     }
 
     public function category_product($slug)
     {
-        $category_id = Category::where('slug',$slug)->first()->id;
-        $products = Product::where('status',1)->where('category_id',$category_id)->get();
+        $category_id = Category::where('slug', $slug)->first()->id;
+        $products = Product::where('status', 1)->where('category_id', $category_id)->get();
         $new_products = Product::where('status', 1)->latest()->take(3)->get();
-        $subcategories = Subcategory::where('status', 1)->where('category_id',$category_id)->latest()->get();
+        $subcategories = Subcategory::where('status', 1)->where('category_id', $category_id)->latest()->get();
         return view('Frontend.pages.category', compact('products', 'new_products', 'subcategories'));
     }
 
@@ -77,7 +99,7 @@ class FrontendController extends Controller
     public function contact()
     {
         $contact = Contact::first();
-        return view('Frontend.pages.contact',compact('contact'));
+        return view('Frontend.pages.contact', compact('contact'));
     }
 
     public function contact_submit(Request $request)
@@ -90,6 +112,6 @@ class FrontendController extends Controller
         $contact_us->message = $request->message;
 
         $contact_us->save();
-        return back()->with('success','Message send Success!');
+        return back()->with('success', 'Message send Success!');
     }
 }

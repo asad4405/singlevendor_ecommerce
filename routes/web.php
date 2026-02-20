@@ -9,7 +9,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[FrontendController::class,'index'])->name('index');
 Route::get('/category/product/{slug}',[FrontendController::class,'category_product'])->name('category.product');
 Route::get('/subcategory/product/{slug}',[FrontendController::class,'subcategory_product'])->name('subcategory.product');
+
 Route::get('/product/{slug}',[FrontendController::class,'product_details'])->name('product.details');
+Route::get('/get-sizes-by-color', [FrontendController::class, 'getSizesByColor']);
+Route::get('/get-inventory-by-size', [FrontendController::class, 'getInventoryBySize']);
+
+Route::get('/get-sizes-by-color', [FrontendController::class, 'getSizesByColor']);
 Route::get('/shop',[FrontendController::class,'shop'])->name('shop');
 Route::get('/contact',[FrontendController::class,'contact'])->name('contact');
 Route::post('/contact/submit',[FrontendController::class,'contact_submit'])->name('contact.submit');

@@ -120,10 +120,19 @@
                                 </div>
 
                                 <div class="mb-3 col-12">
-                                    <label for="price" class="form-label">Price </label>
+                                    <label for="price" class="form-label">Sale Price </label>
                                     <input type="text" id="price" name="price" value="{{ old('price') }}"
                                         class="form-control">
                                     @error('price')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3 col-12">
+                                    <label for="old_price" class="form-label">Old Price </label>
+                                    <input type="text" id="old_price" name="old_price" value="{{ old('old_price') }}"
+                                        class="form-control">
+                                    @error('old_price')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -211,6 +220,14 @@
                                         <input type="text" id="price" name="price"
                                             value="{{ $inventory->price }}" class="form-control">
                                         @error('price')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3 col-12">
+                                        <label for="old_price" class="form-label">Old Price </label>
+                                        <input type="text" id="price" name="old_price"
+                                            value="{{ $inventory->old_price }}" class="form-control">
+                                        @error('old_price')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>

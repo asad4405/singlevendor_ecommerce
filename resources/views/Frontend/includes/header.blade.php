@@ -142,16 +142,16 @@
                                                 $subtotal = 0;
                                             @endphp
                                             @foreach ($cart as $key => $value)
-                                                @php
-                                                    $product = App\Models\Product::find($value['product_id']);
+                                                    @php
+                                                        $product = App\Models\Product::find($value['product_id']);
 
-                                                    $inventory = App\Models\Inventory::where('product_id', $product->id)
-                                                        ->where('color_id', $value['color_id'])
-                                                        ->where('size_id', $value['size_id'])
-                                                        ->first();
-                                                @endphp
-                                                <div class="clearfix mini-cart-item">
-                                                    <div class="mini-cart-item-image">
+                                                        $inventory = App\Models\Inventory::where('product_id', $product->id)
+                                                            ->where('color_id', $value['color_id'])
+                                                            ->where('size_id', $value['size_id'])
+                                                            ->first();
+                                                    @endphp
+                                                    <div class="clearfix mini-cart-item">
+                                                            <div class=" mini-cart-item-image">
                                                         <a href="{{ route('product.details', $product->slug) }}"><img
                                                                 src="{{ asset($product->product_image) }}" alt></a>
                                                     </div>
@@ -160,11 +160,16 @@
                                                             href="{{ route('product.details', $product->slug) }}">{{ $product->product_name }}</a>
                                                         <span class="mini-cart-item-price">
                                                             @if ($product->product_type == 1)
-                                                                ৳ {{ $price = $inventory->price }}
+                                                                ৳{{ $price = $inventory->price }}
                                                             @else
-                                                                ৳ {{ $price = $product->new_price }}
+                                                                ৳{{ $price = $product->new_price }}
                                                             @endif x {{ $value['quantity'] }}
                                                         </span>
+                                                        @if($product->product_type == 1)
+                                                            <span class="mini-cart-item-price">Color:
+                                                                {{ $inventory->color->color_name }} Size:
+                                                                {{ $inventory->size->size_name }}</span>
+                                                        @endif
                                                         <span class="mini-cart-item-quantity"><a
                                                                 href="{{ route('cart.remove', $key) }}"><i
                                                                     class="ti-close"></i></a></span>
@@ -174,22 +179,22 @@
                                                     $subtotal += $price * $value['quantity'];
                                                 @endphp
                                             @endforeach
-                                        </div>
-                                        <div class="clearfix mini-cart-action">
-                                            <span class="mini-checkout-price">Subtotal:
-                                                <span>৳ {{ $subtotal }}</span></span>
-                                            <div class="mini-btn">
-                                                <a href="{{ route('cart') }}" class="view-cart-btn">View Cart</a>
-                                            </div>
+                                    </div>
+                                    <div class="clearfix mini-cart-action">
+                                        <span class="mini-checkout-price">Subtotal:
+                                            <span>৳ {{ $subtotal }}</span></span>
+                                        <div class="mini-btn">
+                                            <a href="{{ route('cart') }}" class="view-cart-btn">View Cart</a>
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                        </ul>
                     </div>
+                    </li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!--  end header-middle -->
     <div class="wpo-site-header">
@@ -243,7 +248,8 @@
                         <div id="navbar" class="collapse navbar-collapse navigation-holder">
                             <button class="menu-close"><i class="ti-close"></i></button>
                             <ul class="mb-2 nav navbar-nav mb-lg-0">
-                                <li class="d-lg-none"><a style="font-size: 10px" href="{{ route('index') }}">{{ $generalsetting->description }}</a></li>
+                                <li class="d-lg-none"><a style="font-size: 10px"
+                                        href="{{ route('index') }}">{{ $generalsetting->description }}</a></li>
                                 <li class="menu-item-has-children">
                                     <a href="{{ route('index') }}">Home</a>
                                 </li>

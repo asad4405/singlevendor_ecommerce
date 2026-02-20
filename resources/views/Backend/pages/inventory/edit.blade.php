@@ -38,7 +38,7 @@
                                 <select name="color_id" id="color_id" class="form-select">
                                     <option>Select Color</option>
                                     @foreach ($colors as $value)
-                                        <option @if ($inventory->color_id) selected @endif
+                                        <option @if ($inventory->color_id == $value->id) selected @endif
                                             value="{{ $value->id }}">
                                             {{ $value->color_name }}</option>
                                     @endforeach
@@ -73,10 +73,19 @@
                             </div>
 
                             <div class="mb-3 col-12">
-                                <label for="price" class="form-label">Price </label>
+                                <label for="price" class="form-label">Sale Price </label>
                                 <input type="text" id="price" name="price" value="{{ $inventory->price }}"
                                     class="form-control">
                                 @error('price')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 col-12">
+                                <label for="old_price" class="form-label">Old Price </label>
+                                <input type="text" id="old_price" name="old_price" value="{{ $inventory->old_price }}"
+                                    class="form-control">
+                                @error('old_price')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

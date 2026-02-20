@@ -73,16 +73,10 @@
                                                     <div class="product">
                                                         <ul>
                                                             <li class="first-cart">{{ $product->product_name }}</li>
-                                                            <li>
-                                                                <div class="rating-product">
-                                                                    <i class="fi flaticon-star"></i>
-                                                                    <i class="fi flaticon-star"></i>
-                                                                    <i class="fi flaticon-star"></i>
-                                                                    <i class="fi flaticon-star"></i>
-                                                                    <i class="fi flaticon-star"></i>
-                                                                    <span>130</span>
-                                                                </div>
-                                                            </li>
+                                                            @if($product->product_type == 1)
+                                                            <li>Color: {{ $inventory->color->color_name }}</li>
+                                                            <li>Size: {{ $inventory->size->size_name }}</li>
+                                                            @endif
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -132,7 +126,7 @@
                                     <input type="text" class="form-control" placeholder="Enter your coupon">
                                     <button class="theme-btn-s2" type="submit">Apply</button>
                                 </div> --}}
-                                {{-- <a class="theme-btn-s2" href="#"><i class="fi flaticon-refresh"></i> Update Cart</a> --}}
+                                <a class="theme-btn-s2" href="#"><i class="fi flaticon-refresh"></i> Update Cart</a>
                             </div>
                         </form>
                     </div>
