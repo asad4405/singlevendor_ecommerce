@@ -149,11 +149,43 @@ class OrderController extends Controller
         // order cart remove
         Cart::where('ip_address', $ip_address)->orWhere('customer_id', $customer_id)->delete();
 
+        $data = Order::with([
+            'orderdetails:id,order_id,product_name,product_color,product_size,quantity',
+            'shipping:id,order_id,name,phone,email,address,area',
+            'payment:id,order_id,amount,payment_method,payment_status'
+        ])->where('invoice_id', $request->invoice_id)
+            ->first();
+
         return response()->json([
             'status'  => true,
-            'message' => 'Order placed successfully',
-            'order_id' => $order->id,
-            'invoice_id' => $order->invoice_id
+            'data' => $data,
+            'message' => 'Order placed successfully'
         ], 201);
+    }
+
+    public function trackOrder(Request $request)
+    {
+        $request->validate([
+            'invoice_id' => 'required|exists:orders,invoice_id',
+        ]);
+
+        $order = Order::where('invoice_id', $request->invoice_id)->first();
+
+        if (!$order) {
+            return response()->json(['status' => false, 'message' => 'Order not found'], 404);
+        }
+
+        $data = Order::with([
+            'orderdetails:id,order_id,product_name,product_color,product_size,quantity',
+            'shipping:id,order_id,name,phone,email,address,area',
+            'payment:id,order_id,amount,payment_method,payment_status'
+        ])->where('invoice_id', $request->invoice_id)
+            ->first();
+
+        return response()->json([
+            'status' => true,
+            'data' => $data,
+            'message' => 'Order track successfully'
+        ], 200);
     }
 }

@@ -18,3 +18,4 @@ Route::post('/clear-cart', [CartController::class, 'clearCart']);
 
 // orders
 Route::post('/place-order', [OrderController::class, 'placeOrder']);
+Route::post('/track-order', [OrderController::class, 'trackOrder']);
