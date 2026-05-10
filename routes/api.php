@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\SettingsController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,3 +15,6 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart']);
 Route::get('/cart-products', [CartController::class, 'cartProducts']);
 Route::post('/remove-from-cart', [CartController::class, 'removeFromCart']);
 Route::post('/clear-cart', [CartController::class, 'clearCart']);
+
+// orders
+Route::post('/place-order', [OrderController::class, 'placeOrder']);
