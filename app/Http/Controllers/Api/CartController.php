@@ -146,4 +146,19 @@ class CartController extends Controller
             'data'    => $carts
         ]);
     }
+
+    public function removeFromCart(Request $request)
+    {
+        $request->validate([
+            'cart_id' => 'required|integer|exists:carts,id',
+        ]);
+
+        $cart = Cart::find($request->cart_id);
+        $cart->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Product removed from cart successfully'
+        ]);
+    }
 }
