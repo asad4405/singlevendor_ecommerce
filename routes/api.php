@@ -13,3 +13,4 @@ Route::get('contact-info',[SettingsController::class,'contact_info']);
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);
 Route::get('/cart-products', [CartController::class, 'cartProducts']);
 Route::post('/remove-from-cart', [CartController::class, 'removeFromCart']);
+Route::post('/clear-cart', [CartController::class, 'clearCart']);

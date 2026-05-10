@@ -161,4 +161,24 @@ class CartController extends Controller
             'message' => 'Product removed from cart successfully'
         ]);
     }
+
+    public function clearCart(Request $request)
+    {
+        $ip_address = $request->ip();
+
+        $customer_id = Auth::guard('customer')->check()
+            ? Auth::guard('customer')->id()
+            : null;
+
+        Cart::where('ip_address', $ip_address)
+            ->when($customer_id, function ($q) use ($customer_id) {
+                $q->orWhere('customer_id', $customer_id);
+            })
+            ->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Cart cleared successfully'
+        ]);
+    }
 }
