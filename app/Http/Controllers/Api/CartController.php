@@ -100,13 +100,50 @@ class CartController extends Controller
             $cart->color_id    = $request->color_id ?? null;
             $cart->size_id     = $request->size_id ?? null;
             $cart->quantity    = $requestQty;
+            $cart->new_price   = $product->product_type == 1 ? $inventory->price : $product->new_price;
+            $cart->old_price   = $product->product_type == 1 ? $inventory->old_price : $product->old_price;
             $cart->save();
         }
+
+        $data = Cart::with(['product:id,product_name,product_image', 'color:id,color_name', 'size:id,size_name'])
+            ->where('id', $cart->id)
+            ->select('id', 'product_id', 'color_id', 'size_id', 'quantity', 'new_price', 'old_price')
+            ->first();
 
         return response()->json([
             'status'  => true,
             'message' => 'Product added to cart successfully',
-            'data'    => $cart
+            'data'    => $data
+        ]);
+    }
+
+    public function cartProducts(Request $request)
+    {
+        $ip_address = $request->ip();
+
+        $customer_id = Auth::guard('customer')->check()
+            ? Auth::guard('customer')->id()
+            : null;
+
+        $carts = Cart::with(['product:id,product_name,product_image', 'color:id,color_name', 'size:id,size_name'])
+            ->where('ip_address', $ip_address)
+            ->when($customer_id, function ($q) use ($customer_id) {
+                $q->orWhere('customer_id', $customer_id);
+            })
+            ->get();
+
+        if ($carts->isEmpty()) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Cart is empty',
+                'data'    => []
+            ]);
+        }
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Cart products fetched successfully',
+            'data'    => $carts
         ]);
     }
 }
