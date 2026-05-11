@@ -10,4 +10,10 @@ class Category extends Model
     {
         return $this->hasMany(Subcategory::class, 'category_id')->where('status', 1);
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id')
+            ->select('id', 'category_id','subcategory_id','childcategory_id', 'product_name', 'slug','product_image','product_type','old_price','new_price')
+            ->where('status', 1);
+    }
 }

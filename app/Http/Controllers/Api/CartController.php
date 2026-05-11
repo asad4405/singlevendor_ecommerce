@@ -146,4 +146,39 @@ class CartController extends Controller
             'data'    => $carts
         ]);
     }
+
+    public function removeFromCart(Request $request)
+    {
+        $request->validate([
+            'cart_id' => 'required|integer|exists:carts,id',
+        ]);
+
+        $cart = Cart::find($request->cart_id);
+        $cart->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Product removed from cart successfully'
+        ]);
+    }
+
+    public function clearCart(Request $request)
+    {
+        $ip_address = $request->ip();
+
+        $customer_id = Auth::guard('customer')->check()
+            ? Auth::guard('customer')->id()
+            : null;
+
+        Cart::where('ip_address', $ip_address)
+            ->when($customer_id, function ($q) use ($customer_id) {
+                $q->orWhere('customer_id', $customer_id);
+            })
+            ->delete();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Cart cleared successfully'
+        ]);
+    }
 }

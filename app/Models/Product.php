@@ -13,4 +13,13 @@ class Product extends Model
     {
         return $this->BelongsTo(Category::class,'category_id');
     }
+    public function image()
+    {
+        return $this->hasOne(SliderImage::class, 'product_id')->select('id','slider_image','product_id');
+    }
+    public function inventory()
+    {
+        return $this->hasMany(Inventory::class, 'product_id')->where('status', 1)
+        ->select('id','product_id','color_id','size_id','price','old_price');
+    }
 }
