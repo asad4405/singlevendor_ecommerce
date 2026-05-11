@@ -13,6 +13,8 @@ Route::get('contact-info',[SettingsController::class,'contact_info']);
 
 // products
 Route::get('/front-category-products', [ProductController::class, 'frontCategoryProducts']);
+Route::get('/product-details/{slug}', [ProductController::class, 'productDetails']);
+Route::get('/related-products/{slug}', [ProductController::class, 'relatedProducts']);
 
 // cart
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);
