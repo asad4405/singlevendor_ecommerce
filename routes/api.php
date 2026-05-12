@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FrontendController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
@@ -13,6 +14,10 @@ Route::get('contact-info', [SettingsController::class, 'contact_info']);
 Route::get('social-media', [FrontendController::class, 'socialMedia']);
 // banner
 Route::get('/mainslider', [FrontendController::class, 'mainSlider']);
+
+// category
+Route::get('/categories', [CategoryController::class, 'categoryList']);
+Route::get('/menu-categories', [CategoryController::class, 'menuCategories']);
 
 // products
 Route::get('/front-category-products', [ProductController::class, 'frontCategoryProducts']);
