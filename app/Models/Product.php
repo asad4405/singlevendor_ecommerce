@@ -22,4 +22,10 @@ class Product extends Model
         return $this->hasMany(Inventory::class, 'product_id')->where('status', 1)
         ->select('id','product_id','color_id','size_id','price','old_price');
     }
+
+    public function sliderimages()
+    {
+        return $this->hasMany(SliderImage::class, 'product_id')->select('id','slider_image','product_id');
+    }
+
 }
