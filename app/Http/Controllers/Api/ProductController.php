@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Inventory;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -45,13 +46,18 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)
             ->select('id', 'product_name', 'product_code', 'product_image', 'product_type', 'category_id', 'subcategory_id', 'childcategory_id', 'old_price', 'new_price', 'stock', 'product_unit', 'product_video', 'short_description', 'description')
-            ->with('inventory','inventory.colors','inventory.sizes','sliderimages')->first();
+            ->with('sliderimages')->first();
+        $inventory = Inventory::where('product_id',$product->id)->with('color','size')->get();
 
         return response()->json([
             'status' => true,
-            'data' => $product,
+            'data' =>  [
+                'product'        => $product,
+                'inventory'  => $inventory,
+            ],
             'messsage' => 'Product details data fetch successfully!'
         ]);
+
     }
 
     public function relatedProducts($slug)
