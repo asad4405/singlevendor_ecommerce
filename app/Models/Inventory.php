@@ -22,4 +22,15 @@ class Inventory extends Model
         return $this->belongsTo(Size::class,'size_id')
         ->select('id','size_name');
     }
+
+    public function colors()
+    {
+        return $this->hasMany(Color::class, 'id')
+        ->select('id','color_name','color_code');
+    }
+    public function sizes()
+    {
+        return $this->hasMany(Size::class, 'id')
+        ->select('id','size_name');
+    }
 }

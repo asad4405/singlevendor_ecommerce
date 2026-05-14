@@ -45,7 +45,7 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)
             ->select('id', 'product_name', 'product_code', 'product_image', 'product_type', 'category_id', 'subcategory_id', 'childcategory_id', 'old_price', 'new_price', 'stock', 'product_unit', 'product_video', 'short_description', 'description')
-            ->with('inventory')->first();
+            ->with('inventory','inventory.colors','inventory.sizes','sliderimages')->first();
 
         return response()->json([
             'status' => true,
